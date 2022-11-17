@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\MovieRequest;
 use App\Models\Movie;
 
 class MoviesController extends Controller
@@ -33,16 +34,20 @@ class MoviesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MovieRequest $request)
     {
-        return  Movie::create([
-            'title' => $request['title'],
-            'director' => $request['director'],
-            'imageUrl' => $request['imageUrl'],
-            'duration' => $request['duration'],
-            'releaseDate' => $request['releaseDate'],
-            'genre' => $request['genre'],
+        $validated = $request->validated();
+
+        $movieCreate = Movie::create([
+            'title' => $validated['title'],
+            'director' => $validated['director'],
+            'imageUrl' => $validated['imageUrl'],
+            'duration' => $validated['duration'],
+            'releaseDate' => $validated['releaseDate'],
+            'genre' => $validated['genre'],
         ]);
+
+        return $movieCreate;
     }
 
     /**
@@ -74,16 +79,20 @@ class MoviesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(MovieRequest $request, $id)
     {
-        return  Movie::where('id', $id)->update([
-            'title' => $request['title'],
-            'director' => $request['director'],
-            'imageUrl' => $request['imageUrl'],
-            'duration' => $request['duration'],
-            'releaseDate' => $request['releaseDate'],
-            'genre' => $request['genre'],
+        $validated = $request->validated();
+
+        $movieUpdate = Movie::where($id)->update([
+            'title' => $validated['title'],
+            'director' => $validated['director'],
+            'imageUrl' => $validated['imageUrl'],
+            'duration' => $validated['duration'],
+            'releaseDate' => $validated['releaseDate'],
+            'genre' => $validated['genre'],
         ]);
+
+        return $movieUpdate;
     }
 
     /**
