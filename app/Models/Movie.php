@@ -17,4 +17,9 @@ class Movie extends Model
     ];
 
     use HasFactory;
+
+    public static function scopesearchByTitle($query, $title)
+    {
+        return self::where('title', 'LIKE', '%' . $title . '%');
+    }
 }
